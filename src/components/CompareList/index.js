@@ -1,10 +1,10 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import { Container, Repository } from './styles';
 
 const CompareList = () => (
-  <div>
-    <div>
+  <Container>
+    <Repository>
       <header>
         <img src="https://avatars3.githubusercontent.com/u/69631?v=4" alt="Facebook" />
         <strong>React</strong>
@@ -28,8 +28,8 @@ const CompareList = () => (
           <small> las commit</small>
         </li>
       </ul>
-    </div>
-  </div>
+    </Repository>
+  </Container>
 );
 
 export default CompareList;
