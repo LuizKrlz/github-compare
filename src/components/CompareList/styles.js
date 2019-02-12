@@ -23,6 +23,10 @@ export const Repository = styled.div`
     flex-direction: column;
     align-items: center;
 
+    button {
+      width: 50px;
+    }
+
     img {
       width: 64px;
     }
@@ -55,6 +59,25 @@ export const Repository = styled.div`
       &:nth-child(2n-1) {
         background: #f5f5f5;
       }
+    }
+  }
+
+  button {
+    width: 200px;
+    height: 45px;
+    margin: 10px auto;
+    background: transparent;
+    background-color: #f25;
+    border: 0;
+    border-radius: 10px;
+    color: #f5f5f4;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fff;
+      color: #f25;
+      border: 2px solid #f25;
     }
   }
 `;
