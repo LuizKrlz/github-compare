@@ -8,3 +8,9 @@ In this project i use the following technologies.
 - Axios
 - Styled Components
 - Html
+- momentjs
+- font-awesome
+
+Api
+
+- Github repos
