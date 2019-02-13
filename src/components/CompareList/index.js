@@ -1,44 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Repository } from './styles';
+import { Container } from './styles';
+import CompareListItem from '../CompareListItem';
 
-const CompareList = ({
-  repositories, handleDelete, handleRefresh, loading,
-}) => (
+const CompareList = ({ repositories, handleDelete }) => (
   <Container>
     {repositories.map(repository => (
-      <Repository key={repository.id}>
-        <header>
-          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
-          <strong>{repository.name}</strong>
-          <small>{repository.owner.login}</small>
-          <button type="button" value={repository.id} onClick={handleRefresh}>
-            {loading ? <i className="fa fa-refresh fa-pulse" /> : <i className="fa fa-refresh" />}
-          </button>
-        </header>
-        <ul>
-          <li>
-            {repository.stargazers_count}
-            <small> stars</small>
-          </li>
-          <li>
-            {repository.forks_count}
-            <small> forks</small>
-          </li>
-          <li>
-            {repository.open_issues_count}
-            <small> issues</small>
-          </li>
-          <li>
-            {repository.lastCommit}
-            <small> las commit</small>
-          </li>
-        </ul>
-        <button type="button" value={repository.id} onClick={handleDelete}>
-          <i className="fa fa-trash" />
-        </button>
-      </Repository>
+      <CompareListItem handleDelete={handleDelete} key={repository.id} repository={repository} />
     ))}
   </Container>
 );
@@ -59,6 +28,6 @@ CompareList.propTypes = {
     }),
   ).isRequired,
   handleDelete: PropTypes.func.isRequired,
-  handleRefresh: PropTypes.func.isRequired,
 };
+
 export default CompareList;

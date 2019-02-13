@@ -3,69 +3,35 @@ import moment from 'moment';
 
 import api from '../../services/api';
 import logo from '../../assets/logo.png';
-import { Container, Form } from './styles';
+import { Container } from './styles';
+
 import CompareList from '../../components/CompareList';
+import Form from '../../components/Form';
 
 export default class Main extends Component {
   state = {
     loading: false,
-    loadingPull: false,
     repositoryError: false,
     repositoryInput: '',
     repositories: [],
   };
 
   componentDidMount() {
-    const { repositories } = this.state;
-
-    let localRepositories = localStorage.getItem('repositories');
-
-    localRepositories = JSON.parse(localRepositories);
-
-    if (localRepositories) {
-      this.setState({ repositories: [...repositories, ...localRepositories] });
-    }
+    this.getList();
   }
 
-  search = async (searh) => {
-    const { data: repository } = await api.get(`/repos/${searh}`);
-    return repository;
+  getList = () => {
+    const repositories = JSON.parse(localStorage.getItem('repositories') || []);
+
+    this.setState({ repositories });
   };
 
-  handleAddRepository = async (e) => {
-    e.preventDefault();
-    const { repositories, repositoryInput } = this.state;
-    this.setState({ loading: true });
-
-    try {
-      const repository = await this.search(repositoryInput);
-
-      repository.lastCommit = moment(repository.pushed_at).fromNow();
-
-      localStorage.setItem('repositories', JSON.stringify([...repositories, repository]));
-
-      this.setState({
-        repositoryInput: '',
-        repositories: [...repositories, repository],
-        repositoryError: false,
-      });
-    } catch (error) {
-      this.setState({ repositoryError: true });
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
-
-  handleDelete = (e) => {
+  handleDelete = (id) => {
     const { repositories } = this.state;
 
-    e.preventDefault();
-    const { value } = e.target;
-    const newRepositories = repositories.filter(
-      item => parseInt(item.id, 10) !== parseInt(value, 10),
-    );
-    this.setState({ repositories: [...newRepositories] });
+    const newRepositories = repositories.filter(item => item.id !== id);
     localStorage.setItem('repositories', JSON.stringify(newRepositories));
+    this.getList();
   };
 
   handlePull = async (e) => {
@@ -114,15 +80,7 @@ export default class Main extends Component {
       <Container>
         <img src={logo} alt="Github Compare" />
 
-        <Form withError={repositoryError} onSubmit={this.handleAddRepository}>
-          <input
-            type="text"
-            placeholder="usuário/repositório"
-            value={repositoryInput}
-            onChange={e => this.setState({ repositoryInput: e.target.value })}
-          />
-          <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'OK'}</button>
-        </Form>
+        <Form refreshList={() => this.getList()} />
         <CompareList
           loading={loadingPull}
           handleRefresh={this.handlePull}
