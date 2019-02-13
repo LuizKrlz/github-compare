@@ -77,7 +77,6 @@ export default class Main extends Component {
 
     let index = null;
     this.setState({ loadingPull: true });
-    console.log('asdsd');
     let find = repositories.filter(item => parseInt(item.id, 10) === parseInt(value, 10))[0];
     index = repositories.findIndex(item => parseInt(item.id, 10) === parseInt(value, 10));
 
