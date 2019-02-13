@@ -7,7 +7,7 @@ import { Form as FormStyle } from './styles';
 
 const Form = ({ refreshList }) => {
   const [error, setError] = useState(false);
-  const [input, setInput] = useState('luizkrlz/environment');
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleAddRepository = async (e) => {
@@ -17,7 +17,8 @@ const Form = ({ refreshList }) => {
     try {
       const { data: repository } = await api.get(`/repos/${input}`);
       repository.lastCommit = moment(repository.pushed_at).fromNow();
-      const repositories = JSON.parse(localStorage.getItem('repositories') || []);
+      const data = localStorage.getItem('repositories');
+      const repositories = data ? JSON.parse(data) : [];
 
       localStorage.setItem('repositories', JSON.stringify([...repositories, repository]));
 

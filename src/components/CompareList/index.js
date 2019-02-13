@@ -4,10 +4,18 @@ import PropTypes from 'prop-types';
 import { Container } from './styles';
 import CompareListItem from '../CompareListItem';
 
-const CompareList = ({ repositories, handleDelete }) => (
+const CompareList = ({
+  repositories, handleDelete, handleRefresh, load,
+}) => (
   <Container>
     {repositories.map(repository => (
-      <CompareListItem handleDelete={handleDelete} key={repository.id} repository={repository} />
+      <CompareListItem
+        handleDelete={handleDelete}
+        handleRefresh={handleRefresh}
+        load={load}
+        key={repository.id}
+        repository={repository}
+      />
     ))}
   </Container>
 );
@@ -28,6 +36,8 @@ CompareList.propTypes = {
     }),
   ).isRequired,
   handleDelete: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
+  load: PropTypes.bool.isRequired,
 };
 
 export default CompareList;
