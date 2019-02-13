@@ -70,12 +70,16 @@ export default class Main extends Component {
 
   handlePull = async (e) => {
     e.preventDefault();
-    const { repositories } = this.state;
+    const { repositories, loadingPull } = this.state;
     const { value } = e.target;
 
-    this.setState({ loadingPull: true });
+    if (loadingPull) return;
 
+    let index = null;
+    this.setState({ loadingPull: true });
+    console.log('asdsd');
     let find = repositories.filter(item => parseInt(item.id, 10) === parseInt(value, 10))[0];
+    index = repositories.findIndex(item => parseInt(item.id, 10) === parseInt(value, 10));
 
     if (!find) {
       this.setState({ loadingPull: false });
@@ -87,14 +91,12 @@ export default class Main extends Component {
 
       repository.lastCommit = moment(repository.pushed_at).fromNow();
 
-      const newRepositories = repositories.filter(
-        item => parseInt(item.id, 10) !== parseInt(value, 10),
-      );
+      repositories[index] = repository;
 
-      localStorage.setItem('repositories', JSON.stringify([...newRepositories, repository]));
+      localStorage.setItem('repositories', JSON.stringify([...repositories]));
 
       this.setState({
-        repositories: [...newRepositories, repository],
+        repositories: [...repositories],
       });
     } catch (error) {
       console.log(error);

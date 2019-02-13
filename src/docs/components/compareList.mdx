@@ -1,0 +1,40 @@
+---
+name: Compare List
+---
+
+import CompareList from '../../../src/components/CompareList'
+import { Playground, PropsTable } from 'docz'
+
+# Compare List
+
+This component list all repositories side by side
+
+## Properties
+<PropsTable of={CompareList} />
+
+## Basic usage
+
+<Playground>
+  {() => {
+    var handle = () => {
+
+    }
+
+    var arr = [{
+      id: 1,
+      name: 'react',
+      owner: {
+        avatar_url: 'https://avatars3.githubusercontent.com/u/69631?v=4',
+        login: 'Facebook'
+      },
+      full_name: 'facebook/react',
+      stargazers_count: 10,
+      forks_count: 30,
+      open_issues_count: 10,
+      lastCommit: ' 3 days ago'
+    }]
+    return (
+      <CompareList handleRefresh={handle} handleDelete={handle} loading={false} repositories={arr} />
+    )
+  }}
+</Playground>

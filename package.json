@@ -16,7 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -28,9 +30,15 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@emotion/core": "^10.0.7",
+    "docz": "^0.13.7",
+    "docz-theme-default": "^0.13.7",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4"
+  },
+  "resolutions": {
+    "ansi-styles": "^3.2.0"
   }
 }
