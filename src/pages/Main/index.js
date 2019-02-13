@@ -27,13 +27,19 @@ export default class Main extends Component {
     }
   }
 
+  search = async (searh) => {
+    const { data: repository } = await api.get(`/repos/${searh}`);
+    return repository;
+  };
+
   handleAddRepository = async (e) => {
     e.preventDefault();
     const { repositories, repositoryInput } = this.state;
     this.setState({ loading: true });
 
     try {
-      const { data: repository } = await api.get(`/repos/${repositoryInput}`);
+      const repository = await this.search(repositoryInput);
+
       repository.lastCommit = moment(repository.pushed_at).fromNow();
 
       localStorage.setItem('repositories', JSON.stringify([...repositories, repository]));
@@ -69,7 +75,7 @@ export default class Main extends Component {
 
     this.setState({ loadingPull: true });
 
-    const find = repositories.filter(item => parseInt(item.id, 10) === parseInt(value, 10))[0];
+    let find = repositories.filter(item => parseInt(item.id, 10) === parseInt(value, 10))[0];
 
     if (!find) {
       this.setState({ loadingPull: false });
@@ -77,7 +83,8 @@ export default class Main extends Component {
     }
 
     try {
-      const { data: repository } = await api.get(`/repos/${find.full_name}`);
+      const repository = await this.search(find.full_name);
+
       repository.lastCommit = moment(repository.pushed_at).fromNow();
 
       const newRepositories = repositories.filter(
@@ -93,6 +100,7 @@ export default class Main extends Component {
       console.log(error);
     } finally {
       this.setState({ loadingPull: false });
+      find = null;
     }
   };
 
