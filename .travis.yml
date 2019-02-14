@@ -1,8 +1,5 @@
 language: node_js
 
-cache:
-  yarn: true
-
 install:
   - npm install
 
