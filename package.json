@@ -33,6 +33,7 @@
     "@emotion/core": "^10.0.7",
     "docz": "^0.13.7",
     "docz-theme-default": "^0.13.7",
+    "enzyme": "^3.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",

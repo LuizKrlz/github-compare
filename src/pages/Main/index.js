@@ -37,19 +37,22 @@ export default class Main extends Component {
   handlePull = async (repository) => {
     const { repositories } = this.state;
 
-    this.setState({ load: true });
+    this.setState({
+      repositories: repositories.map(item => ({
+        ...item,
+        load: item.id === repository.id,
+      })),
+    });
 
     try {
-      const newRepository = await api.get(`/repos/${repository.full_name}`);
-
+      const { data: newRepository } = await api.get(`/repos/${repository.full_name}`);
       newRepository.lastCommit = moment(newRepository.pushed_at).fromNow();
 
       const find = repositories.filter(item => item.id !== repository.id);
-
-      localStorage.setItem('repositories', JSON.stringify([...find, ...repository]));
+      localStorage.setItem('repositories', JSON.stringify([...find, newRepository]));
 
       this.setState({
-        repositories: [...find, ...repository],
+        repositories: [...find, newRepository],
       });
     } catch (error) {
       console.log(error);

@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 
 import { Repository } from './styles';
 
-const CompareListItem = ({
-  repository, handleDelete, handleRefresh, load,
-}) => (
+const CompareListItem = ({ repository, handleDelete, handleRefresh }) => (
   <Repository key={repository.id}>
     <header>
       <img src={repository.owner.avatar_url} alt={repository.owner.login} />
       <strong>{repository.name}</strong>
       <small>{repository.owner.login}</small>
       <button type="button" value={repository.id} onClick={() => handleRefresh(repository)}>
-        {load ? <i className="fa fa-refresh fa-pulse" /> : <i className="fa fa-refresh" />}
+        {repository.load ? (
+          <i className="fa fa-refresh fa-pulse" />
+        ) : (
+          <i className="fa fa-refresh" />
+        )}
       </button>
     </header>
     <ul>
@@ -54,7 +56,6 @@ CompareListItem.propTypes = {
   }).isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleRefresh: PropTypes.func.isRequired,
-  load: PropTypes.bool.isRequired,
 };
 
 export default CompareListItem;

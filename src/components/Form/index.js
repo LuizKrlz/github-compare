@@ -27,6 +27,7 @@ const Form = ({ refreshList }) => {
       setError(true);
     } finally {
       setLoading(false);
+      setInput('');
     }
   };
 
