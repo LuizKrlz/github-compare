@@ -10,9 +10,7 @@ import Form from '../../components/Form';
 
 export default class Main extends Component {
   state = {
-    loading: false,
-    repositoryError: false,
-    repositoryInput: '',
+    load: false,
     repositories: [],
   };
 
@@ -21,7 +19,9 @@ export default class Main extends Component {
   }
 
   getList = () => {
-    const repositories = JSON.parse(localStorage.getItem('repositories') || []);
+    const data = localStorage.getItem('repositories');
+
+    const repositories = data ? JSON.parse(data) : [];
 
     this.setState({ repositories });
   };
@@ -34,47 +34,34 @@ export default class Main extends Component {
     this.getList();
   };
 
-  handlePull = async (e) => {
-    e.preventDefault();
-    const { repositories, loadingPull } = this.state;
-    const { value } = e.target;
+  handlePull = async (repository) => {
+    const { repositories } = this.state;
 
-    if (loadingPull) return;
-
-    let index = null;
-    this.setState({ loadingPull: true });
-    let find = repositories.filter(item => parseInt(item.id, 10) === parseInt(value, 10))[0];
-    index = repositories.findIndex(item => parseInt(item.id, 10) === parseInt(value, 10));
-
-    if (!find) {
-      this.setState({ loadingPull: false });
-      return;
-    }
+    this.setState({ load: true });
 
     try {
-      const repository = await this.search(find.full_name);
+      const newRepository = await api.get(`/repos/${repository.full_name}`);
 
-      repository.lastCommit = moment(repository.pushed_at).fromNow();
+      newRepository.lastCommit = moment(newRepository.pushed_at).fromNow();
 
-      repositories[index] = repository;
+      const find = repositories.filter(item => item.id !== repository.id);
 
-      localStorage.setItem('repositories', JSON.stringify([...repositories]));
+      localStorage.setItem('repositories', JSON.stringify([...find, ...repository]));
 
       this.setState({
-        repositories: [...repositories],
+        repositories: [...find, ...repository],
       });
     } catch (error) {
       console.log(error);
+      this.setState({ load: false });
     } finally {
-      this.setState({ loadingPull: false });
-      find = null;
+      console.log('foi');
+      this.setState({ load: false });
     }
   };
 
   render() {
-    const {
-      loadingPull, loading, repositoryError, repositories, repositoryInput,
-    } = this.state;
+    const { loadingPull, repositories, load } = this.state;
 
     return (
       <Container>
@@ -86,6 +73,7 @@ export default class Main extends Component {
           handleRefresh={this.handlePull}
           handleDelete={this.handleDelete}
           repositories={repositories}
+          load={load}
         />
       </Container>
     );
